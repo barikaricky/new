@@ -178,6 +178,46 @@ h2 {
     animation: pulse 2s infinite;
 }
 
+<style>
+  .modal-content {
+    background-color: #222; /* Dark background for crypto theme */
+    color: #fff; /* White text */
+    border-radius: 8px;
+    animation: fadeIn 1s ease-in-out;
+  }
+
+  /* Fade-in animation for the popup */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* Image animation */
+  .modal-body img {
+    animation: pulse 2s infinite;
+    border-radius: 8px;
+  }
+
+  /* Pulse animation for the image */
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+</style>
+
     </style>
   </head>
 
@@ -193,9 +233,30 @@ h2 {
           Experience the future of cryptocurrency with Blaze Coin. Fast, secure,
           and made for gamers.
         </p>
-        <a href="#learn-more" class="btn btn-primary btn-lg mt-3">Learn More</a>
+        <a href="#learn-more" class="btn btn-primary btn-lg mt-3"></a>
       </div>
     </section>
+
+    <!-- Modal for Mining Announcement -->
+<div class="modal fade" id="miningPopup" tabindex="-1" aria-labelledby="miningPopupLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="miningPopupLabel">Mining Announcement</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <img src="image 2.jpg" alt="Mining Image" class="img-fluid mb-3" />
+        <h2 class="mb-4">Mining Will Start Soon!</h2>
+        <p>Mining starts in: <span id="countdown"></span></p>
+        <p>Be prepared for the upcoming mining launch. Stay tuned!</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Okay, Got it!</button>
+      </div>
+    </div>
+  </div>
+</div>
 
     <!-- About Section -->
     <section class="mission-section bg-light" id="about">
@@ -545,3 +606,40 @@ h2 {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
+<script>
+  // Function to handle countdown logic
+  function startCountdown() {
+    // Set the date we're counting down to (7 days from now)
+    const currentDate = new Date();
+    const countdownDate = new Date();
+    countdownDate.setDate(currentDate.getDate() + 7);
+
+    // Update the countdown every second
+    const countdownInterval = setInterval(function() {
+      const now = new Date().getTime();
+      const distance = countdownDate - now;
+
+      // Time calculations for days
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+
+      // Output the result in the element with id="countdown"
+      document.getElementById("countdown").innerHTML = days + " day" + (days !== 1 ? "s" : "") + " left";
+
+      // If the countdown is finished, clear the interval
+      if (distance < 0) {
+        clearInterval(countdownInterval);
+        document.getElementById("countdown").innerHTML = "Mining has started!";
+      }
+    }, 1000);
+  }
+
+  // Show the popup after 3 seconds and start the countdown
+  window.onload = function () {
+    setTimeout(function () {
+      var miningPopup = new bootstrap.Modal(document.getElementById('miningPopup'));
+      miningPopup.show();
+      startCountdown();
+    }, 3000);
+  };
+</script>
+
